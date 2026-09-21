@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
 from json import loads as jsonloads
-from typing import Any
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from paho.mqtt.client import Client as MqttClient, CallbackAPIVersion
+
+from routes import metrics_router
 
 
 @asynccontextmanager
@@ -26,11 +27,4 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
-@app.get("/test")
-def get_data(request: Request) -> Response:
-    state: dict[str, Any] = app.state.latest
-
-    ret = "\n".join(f"{key}={val}" for key, val in state.items())
-
-    return Response(content=ret, media_type="text/plain")
+app.include_router(metrics_router)
