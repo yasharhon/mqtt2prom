@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -8,4 +10,6 @@ class AppSettings(BaseSettings):
 
     mqtt_host: str = Field()
     mqtt_port: int = Field(default=1883)
+    mqtt_username: Optional[str] = Field(default=None)
+    mqtt_password: Optional[str] = Field(default=None)
     mqtt_topics: list[str] = Field()

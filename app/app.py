@@ -16,6 +16,10 @@ async def lifespan(app: FastAPI):
 
     client = MqttClient(CallbackAPIVersion.VERSION2)
 
+    # This needs to handle arbitrary auth
+    if settings.mqtt_username:
+        client.username_pw_set(settings.mqtt_username, settings.mqtt_password)
+
     def on_message(client, userdata, msg):
         app.state.latest = jsonloads(msg.payload)
 
