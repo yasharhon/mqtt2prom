@@ -29,6 +29,10 @@ async def lifespan(app: FastAPI):
 
     client.on_message = on_message
     client.connect(settings.mqtt_host, settings.mqtt_port, 60)
+
+    for topic in settings.mqtt_topics:
+        client.subscribe(topic)
+
     client.loop_start()
 
     yield
