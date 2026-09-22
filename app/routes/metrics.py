@@ -15,6 +15,7 @@ def get_data(request: Request) -> Response:
         "\n".join(
             f'{key}{{{TOPIC_FILTER_LABEL}="{topic_name}"}} {val}'
             for key, val in data.items()
+            if type(val) in [int, float]  # This should be unit tested
         )
         for topic_name, data in state_for_topics.items()
     )
